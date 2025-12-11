@@ -9,7 +9,8 @@ COPY nest-cli.json .
 COPY prisma.config.ts .
 COPY tsconfig.build.json .
 COPY tsconfig.json .
-COPY src/ prisma/ ./
+COPY src/ ./src/
+COPY prisma/ ./prisma/
 
 RUN corepack enable pnpm
 RUN pnpm install --frozen-lockfile
@@ -18,10 +19,16 @@ RUN pnpm build
 
 FROM node:22-alpine AS production
 
+ENV DATABASE_URL=postgres://user:password@localhost:5432/budget-manager?schema=public
+
 COPY --from=build /home/node/app/dist dist
+COPY prisma/ ./prisma/
 COPY package.json .
 COPY pnpm-lock.yaml .
 COPY prisma.config.ts .
 
+RUN corepack enable pnpm
 RUN pnpm install --frozen-lockfile --prod
 RUN pnpm exec prisma generate
+
+CMD node dist/src/main.js
