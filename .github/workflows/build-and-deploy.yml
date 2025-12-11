@@ -32,8 +32,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/budget-manager:${{ github.sha }}
-            ${{ secrets.DOCKER_USERNAME }}/budget-manager:latest
+            ${{ secrets.DOCKER_USERNAME }}/budget-manager-backend:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/budget-manager-backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd projects/budget-manager
-            docker pull ${{ secrets.DOCKER_USERNAME }}/budget-manager:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/budget-manager-backend:latest
             docker compose down budget-manager-backend
             docker compose up -d budget-manager-backend --build
             docker image prune -f
