@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model User {
+  id            String        @id @default(uuid())
+  name          String
+  email         String        @unique
+  password      String
+  budgetId      String
+  emailVerified Boolean       @default(false)
+  Transactions  Transaction[]
+  Pendings      PendingItem[]
+  Budget        Budget        @relation(fields: [budgetId], references: [id])
+  Sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  secret    String
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model PendingItem {
+  id        String   @id @default(uuid())
+  userId    String
+  content   String
+  status    Boolean
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Budget {
+  id        String   @id @default(uuid())
+  name      String   @default("Mi presupuesto")
+  amount    Float
+  createdAt DateTime @default(now())
+  User      User[]
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  userId      String
+  amount      Float
+  type        TransactionType
+  category    String
+  description String?
+  createdAt   DateTime        @default(now())
+  User        User            @relation(fields: [userId], references: [id])
+}
