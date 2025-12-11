@@ -1,5 +1,7 @@
 FROM node:22-alpine AS build
 
+ENV DATABASE_URL=postgres://user:password@localhost:5432/budget_manager?schema=public
+
 WORKDIR /home/node/app
 COPY package.json .
 COPY pnpm-lock.yaml .
