@@ -21,6 +21,8 @@ FROM node:22-alpine AS production
 
 ENV DATABASE_URL=postgres://user:password@localhost:5432/budget-manager?schema=public
 
+WORKDIR /home/node/app
+
 COPY --from=build /home/node/app/dist dist
 COPY prisma/ ./prisma/
 COPY package.json .
