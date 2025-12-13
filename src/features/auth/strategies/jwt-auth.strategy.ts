@@ -33,6 +33,9 @@ export default class JwtAuthStrategy extends PassportStrategy(
       throw new UnauthorizedException('Invalid user');
     }
 
+    if (!user.emailVerified)
+      throw new UnauthorizedException('Email not verified');
+
     req.session = session;
 
     return user;

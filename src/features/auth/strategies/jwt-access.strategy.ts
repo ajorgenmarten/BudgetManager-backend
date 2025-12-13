@@ -50,6 +50,9 @@ export default class JwtAccessStrategy extends PassportStrategy(
 
       if (!user) throw new UnauthorizedException('Invalid user');
 
+      if (!user.emailVerified)
+        throw new UnauthorizedException('Email not verified');
+
       req.session = session;
 
       return user;

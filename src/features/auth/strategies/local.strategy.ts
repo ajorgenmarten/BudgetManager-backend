@@ -17,6 +17,9 @@ export default class LocalStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    if (!user.emailVerified)
+      throw new UnauthorizedException('Email not verified');
+
     return user;
   }
 }
