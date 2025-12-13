@@ -45,6 +45,24 @@ export default class TransactionEntity implements Transaction {
     return this._createdAt;
   }
 
+  static new(
+    user: UserEntity,
+    type: TransactionType,
+    amount: number,
+    category: string,
+    description: string | null,
+  ) {
+    return new TransactionEntity(
+      crypto.randomUUID(),
+      user.id,
+      amount,
+      type,
+      category,
+      description,
+      new Date(),
+    );
+  }
+
   static fromDatabase(transaction: Transaction) {
     return new TransactionEntity(
       transaction.id,

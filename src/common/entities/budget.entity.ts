@@ -22,6 +22,10 @@ export default class BudgetEntity implements Budget {
     return this._amount;
   }
 
+  set amount(value: number) {
+    this._amount = value;
+  }
+
   get createdAt(): Date {
     return this._createdAt;
   }

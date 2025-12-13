@@ -6,6 +6,7 @@ import PrismaModule from './common/modules/prisma/prisma.module';
 import AuthModule from './features/auth/auth.module';
 import TodoModule from './features/todo/todo.module';
 import MailerModule from './common/modules/mailer/mailer.module';
+import BudgetModule from './features/budget/budget.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import MailerModule from './common/modules/mailer/mailer.module';
     }),
     AuthModule,
     TodoModule,
+    BudgetModule,
   ],
   controllers: [AppController],
 })

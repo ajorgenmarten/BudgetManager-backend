@@ -1,6 +1,3 @@
-import SessionEntity from '../entities/session.entity';
-import UserEntity from '../entities/user.entity';
-
 export enum TransactionType {
   INCOME = 'INCOME',
   EXPENSE = 'EXPENSE',
@@ -54,12 +51,3 @@ export type Transaction = {
   createdAt: Date;
   User?: User;
 };
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: UserEntity;
-      session?: SessionEntity;
-    }
-  }
-}
