@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import SessionEntity from 'src/common/entities/session.entity';
 import UserEntity from 'src/common/entities/user.entity';
@@ -45,7 +45,7 @@ export default class AuthService {
       registerDto.email,
     );
     if (existUser)
-      throw new BadRequestException('Already a user with this email');
+      throw new ConflictException('Already a user with this email');
 
     const user = UserEntity.new(
       registerDto.name,
@@ -77,25 +77,5 @@ export default class AuthService {
     const loginResponse = await this.login(user);
 
     return loginResponse;
-  }
-
-  async registerUserForTest(registerDto: RegisterDto) {
-    const existUser = await this.authRepository.findUserByEmail(
-      registerDto.email,
-    );
-    if (existUser)
-      throw new BadRequestException('Already a user with this email');
-
-    const user = UserEntity.new(
-      registerDto.name,
-      registerDto.email,
-      registerDto.password,
-    );
-
-    user.emailVerified = true;
-
-    await this.authRepository.registerUser(user);
-
-    return await this.login(user);
   }
 }
